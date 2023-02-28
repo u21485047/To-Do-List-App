@@ -54,6 +54,7 @@ $(document).ready(function() {
       
       // Create a new row for the table
       var newRow = $('<tr>').addClass('table-info');
+      newRow.append($('<td>' + '<input type="checkbox">' + '</td>'));
       newRow.append($('<td>').text(taskName));
       newRow.append($('<td>').text(dueDate));
       newRow.append($('<td>').text(priority));
