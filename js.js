@@ -1,83 +1,73 @@
-// Selectors
-const taskInput = document.querySelector('.task-input');
-const priorityInput = document.querySelector('.priority-input');
-const addButton = document.querySelector('#add-button');
-const taskList = document.querySelector('.task-list');
-const searchInput = document.querySelector('.search-input');
-const searchButton = document.querySelector('.search-button');
+window.onload = function() {
+// Get the form, table and search input elements
+const form = document.querySelector('form');
+const table = document.querySelector('table');
+const searchInput = document.querySelector('input[type="text"][placeholder="Search tasks"]');
 
-// Event listeners
-addButton.addEventListener('click', addTask);
-taskList.addEventListener('click', deleteTask);
-searchButton.addEventListener('click', searchTask);
+// Function to add a new task
+function addTask(e) {
+  e.preventDefault();
 
-// Functions
-function addTask(event) {
-  event.preventDefault();
+  // Get the input and select elements
+  const taskInput = form.querySelector('input[type="text"]');
+  const prioritySelect = form.querySelector('select');
 
-  if (taskInput.value.trim() === '') {
-    alert('Please enter a task');
-    return;
-  }
+  // Create a new row for the task
+  const newRow = document.createElement('tr');
 
-  const taskDiv = document.createElement('div');
-  taskDiv.classList.add('task');
+  // Create cells for the row
+  const taskCell = document.createElement('td');
+  taskCell.textContent = taskInput.value;
+  newRow.appendChild(taskCell);
 
-  const taskName = document.createElement('li');
-  taskName.classList.add('task-name');
-  taskName.innerText = taskInput.value;
-  taskDiv.appendChild(taskName);
+  const dateCell = document.createElement('td');
+  dateCell.textContent = 'N/A';
+  newRow.appendChild(dateCell);
 
-  const dueDate = document.createElement('li');
-  dueDate.classList.add('due-date');
-  dueDate.innerText = formatDate(new Date());
-  taskDiv.appendChild(dueDate);
+  const priorityCell = document.createElement('td');
+  priorityCell.textContent = prioritySelect.value;
+  newRow.appendChild(priorityCell);
 
-  const priority = document.createElement('li');
-  priority.classList.add('priority');
-  priority.innerText = priorityInput.value;
-  taskDiv.appendChild(priority);
-
+  const actionCell = document.createElement('td');
   const deleteButton = document.createElement('button');
-  deleteButton.classList.add('delete-button');
-  deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-  taskDiv.appendChild(deleteButton);
+  deleteButton.classList.add('btn', 'btn-danger');
+  deleteButton.textContent = 'Delete';
+  actionCell.appendChild(deleteButton);
+  newRow.appendChild(actionCell);
 
-  taskList.appendChild(taskDiv);
-
-  taskInput.value = '';
-  priorityInput.value = 'low';
+  // Add the new row to the table
+  table.querySelector('tbody').appendChild(newRow);
+console.log(newRow);
+  // Reset the form inputs
+  form.reset();
 }
 
-function deleteTask(event) {
-  const item = event.target;
-
-  if (item.classList.contains('delete-button')) {
-    const task = item.parentElement;
-    task.remove();
+// Function to delete a task
+function deleteTask(e) {
+  if (e.target.classList.contains('btn-danger')) {
+    e.target.closest('tr').remove();
   }
 }
 
-function searchTask(event) {
-  event.preventDefault();
+// Function to search for tasks
+function searchTasks(e) {
+  const searchText = e.target.value.toLowerCase();
 
-  const searchValue = searchInput.value.trim().toLowerCase();
-  const tasks = taskList.children;
+  // Loop through each row in the table
+  table.querySelectorAll('tbody tr').forEach(row => {
+    const taskName = row.querySelector('td:first-child').textContent.toLowerCase();
 
-  for (let task of tasks) {
-    const taskName = task.querySelector('.task-name').innerText.toLowerCase();
-    const dueDate = task.querySelector('.due-date').innerText.toLowerCase();
-    const priority = task.querySelector('.priority').innerText.toLowerCase();
-
-    if (taskName.includes(searchValue) || dueDate.includes(searchValue) || priority.includes(searchValue)) {
-      task.style.display = 'flex';
+    // If the task name matches the search text, show the row, otherwise hide it
+    if (taskName.includes(searchText)) {
+      row.style.display = '';
     } else {
-      task.style.display = 'none';
+      row.style.display = 'none';
     }
-  }
+  });
 }
 
-function formatDate(date) {
-  const options = { month: 'short', day: 'numeric', year: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
-}
+// Add event listeners to the form, table and search input
+form.addEventListener('.submit', addTask);
+table.addEventListener('click', deleteTask);
+searchInput.addEventListener('input', searchTasks);
+};
