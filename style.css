@@ -35,49 +35,17 @@ form input {
   font-size: 16px;
 }
 
+form select {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
 form button {
   padding: 10px 20px;
   background-color: #4CAF50;
   color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
+  border:
 }
-
-form button:hover {
-  background-color: #3e8e41;
-}
-
-.task-list {
-  list-style: none;
-}
-
-.task {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #fff;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.task input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.task label {
-  display: flex;
-  flex-direction: column;
-}
-
-.task-name {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.due-date {
-  font-size: 14px;
-  color:
